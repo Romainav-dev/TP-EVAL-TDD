@@ -6,13 +6,18 @@ import org.example.repositories.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BookControllerTest {
 
+    @InjectMocks
     private BookController bookController;
+
+    @Mock
     private BookRepository bookRepository;
 
     @BeforeEach

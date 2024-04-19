@@ -13,8 +13,8 @@ Effectuer une réservation pour un adhérent. ✅
 Mettre fin à une réservation. ✅
 Vérifier que la réservation a une date limite correcte. ✅
 Vérifier que l'adhérent ne peut avoir plus de 3 réservations ouvertes simultanées. ✅
-Obtenir la liste des réservations ouvertes. ❌
-Consulter l'historique des réservations pour un adhérent. ❌
+Obtenir la liste des réservations ouvertes. ✅
+Consulter l'historique des réservations pour un adhérent. ✅
 Envoyer un mail de rappel pour les réservations dépassées. ❌
 
 Tests pour l'intégration avec le web service de référencement : ❌
