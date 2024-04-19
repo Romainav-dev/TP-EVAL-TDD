@@ -1,0 +1,68 @@
+Tests pour le CRUD des livres : ❌
+
+Ajouter un livre avec toutes les informations requises. ✅
+Modifier un livre existant. ❌
+Supprimer un livre. ✅
+Rechercher un livre par ISBN. ✅
+Rechercher un livre par titre. ✅
+Rechercher un livre par auteur. ✅
+
+Tests pour la gestion des réservations : ❌
+
+Effectuer une réservation pour un adhérent. ✅
+Mettre fin à une réservation. ✅
+Vérifier que la réservation a une date limite correcte. ✅
+Vérifier que l'adhérent ne peut avoir plus de 3 réservations ouvertes simultanées. ✅
+Obtenir la liste des réservations ouvertes. ❌
+Consulter l'historique des réservations pour un adhérent. ❌
+Envoyer un mail de rappel pour les réservations dépassées. ❌
+
+Tests pour l'intégration avec le web service de référencement : ❌
+
+Vérifier que les informations manquantes sont récupérées correctement depuis le web service en fonction de l'ISBN du livre. ❌
+
+Tests pour l'envoi de mails : ❌
+
+Vérifier que les mails de rappel sont envoyés correctement aux adhérents pour les réservations dépassées. ❌
+
+
+------------------------------ISBN---------------------------------
+
+Tests de validation de l'ISBN : ✅
+
+Vérifier qu'un ISBN valide est accepté lors de l'ajout d'un livre. ✅
+Vérifier qu'un ISBN invalide est rejeté lors de l'ajout d'un livre. ✅
+
+Tests de validation des champs requis : ✅
+
+Vérifier qu'un livre ne peut pas être ajouté sans un ISBN valide. ✅
+Vérifier qu'un livre ne peut pas être ajouté sans un titre. ✅
+Vérifier qu'un livre ne peut pas être ajouté sans un auteur. ✅
+Vérifier qu'un livre ne peut pas être ajouté sans un éditeur. ✅
+Vérifier qu'un livre ne peut pas être ajouté sans un format spécifié. ✅
+
+Tests de validation du format des champs : ❌
+
+Vérifier que le titre d'un livre ne dépasse pas une certaine longueur. ❌
+Vérifier que le nom de l'auteur d'un livre ne dépasse pas une certaine longueur. ❌
+Vérifier que le nom de l'éditeur d'un livre ne dépasse pas une certaine longueur. ❌
+Vérifier que le format d'un livre est parmi les options valides (poche, broché, grand format, etc.). ❌
+Vérifier que l'indication de disponibilité d'un livre est un booléen. ❌
+
+
+-----------------------------------ADHERENT---------------------------------------
+
+Tests de validation des champs requis : ✅
+
+Vérifier qu'un adhérent ne peut pas être ajouté sans un code adhérent valide. ✅
+Vérifier qu'un adhérent ne peut pas être ajouté sans un nom. ✅
+Vérifier qu'un adhérent ne peut pas être ajouté sans un prénom. ✅
+Vérifier qu'un adhérent ne peut pas être ajouté sans une date de naissance. ✅
+Vérifier qu'un adhérent ne peut pas être ajouté sans une civilité spécifiée. ✅
+
+Tests de validation du format des champs : ❌
+
+Vérifier que le nom d'un adhérent ne dépasse pas une certaine longueur. ❌
+Vérifier que le prénom d'un adhérent ne dépasse pas une certaine longueur. ❌
+Vérifier que le code adhérent respecte un format spécifique, s'il y en a un. ❌
+Vérifier que la date de naissance d'un adhérent est dans un format valide et qu'elle est antérieure à la date actuelle. ❌
