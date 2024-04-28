@@ -14,7 +14,6 @@ public class BookValidator {
         return false;
     }
 
-    // Valide un livre en vérifiant ses champs
     public static void validateBook(Book book) {
         if (book == null) {
             throw new IllegalArgumentException("Book cannot be null");

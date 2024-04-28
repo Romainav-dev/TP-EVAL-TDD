@@ -71,20 +71,15 @@ public class BookServiceTest {
         String newFormat = "Broché";
         boolean newAvailable = false;
 
-        // Configurer le comportement du mock pour renvoyer le livre existant
         when(bookRepository.findByIsbn(isbn)).thenReturn(existingBook);
 
-        // Appeler la méthode pour mettre à jour le livre
         bookService.updateBook(isbn, newTitle, newAuthor, newEditor, newFormat, newAvailable);
 
-        // Vérifier que la méthode save de bookRepository a été appelée avec le livre mis à jour
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
         verify(bookRepository).save(captor.capture());
 
-        // Récupérer le livre capturé lors de l'appel à save
         Book capturedBook = captor.getValue();
 
-        // Vérifier que les informations du livre capturé correspondent aux nouvelles informations
         assertEquals(newTitle, capturedBook.getTitle());
         assertEquals(newAuthor, capturedBook.getAuthor());
         assertEquals(newEditor, capturedBook.getEditor());

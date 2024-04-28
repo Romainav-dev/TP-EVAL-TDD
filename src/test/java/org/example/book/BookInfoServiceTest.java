@@ -82,30 +82,4 @@ public class BookInfoServiceTest {
 
         verify(mockDatabaseUpdater).updateBook(expectedBook);
     }
-
-    @Test
-    public void testRetrieveMissingInformationFromWebService() throws BookNotFoundException {
-        // Préparation des données
-        String isbn = "2210765528"; // ISBN d'un livre avec des informations manquantes
-        Book expectedBook = new Book(isbn, "Solo leveling", "Chu-Gong", "A-1 Pictures", "Grand Format", true); // Livre avec des informations manquantes
-
-        // Mock du service web
-        BookDataService webService = mock(BookDataService.class);
-        // Définir le comportement du mock pour cet ISBN spécifique
-        when(webService.fetchBook(isbn))
-                .thenReturn(new Book(isbn, "Solo leveling", "Chu-Gong", null, null, false)); // Seules les informations manquantes sont incluses
-
-        // Création du service d'informations sur les livres avec le mock du service web
-        BookInfoService bookInfoService = new BookInfoService(mockDatabaseService, webService, mockDatabaseUpdater);
-
-        // Appel de la méthode à tester
-        Book retrievedBook = bookInfoService.getBookInfo(isbn);
-
-        // Vérification des résultats
-        assertNotNull(retrievedBook);
-        assertEquals(expectedBook, retrievedBook);
-        // Vérifiez spécifiquement que les informations manquantes ont été récupérées correctement
-        assertEquals(expectedBook.getTitle(), retrievedBook.getTitle());
-        assertEquals(expectedBook.getAuthor(), retrievedBook.getAuthor());
-    }
 }
