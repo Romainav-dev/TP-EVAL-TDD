@@ -1,14 +1,13 @@
-package org.example.controllers;
+package org.example.books.services;
 
-import org.example.books.BookValidator;
-import org.example.models.Book;
-import org.example.repositories.BookRepository;
+import org.example.books.models.Book;
+import org.example.books.repositories.BookRepository;
+import org.example.books.validator.BookValidator;
 
-public class BookController {
-
+public class BookService {
     private BookRepository bookRepository;
 
-    public BookController(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
@@ -44,30 +43,27 @@ public class BookController {
         }
     }
 
-    public void displayBookByIsbn(String isbn) {
+    public Book getBookByIsbn(String isbn) {
         Book book = bookRepository.findByIsbn(isbn);
-        if (book != null) {
-            System.out.println(book);
-        } else {
-            System.out.println("Le livre avec l'ISBN " + isbn + " n'existe pas.");
+        if (book == null) {
+            throw new IllegalArgumentException("Le livre avec l'ISBN " + isbn + " n'existe pas.");
         }
+        return book;
     }
 
-    public void displayBookByTitle(String title){
+    public Book getBookByTitle(String title) {
         Book book = bookRepository.findByTitle(title);
-        if (book != null) {
-            System.out.println(book);
-        } else {
-            System.out.println("Le livre avec le titre " + title + " n'existe pas.");
+        if (book == null) {
+            throw new IllegalArgumentException("Le livre avec le titre " + title + " n'existe pas.");
         }
+        return book;
     }
 
-    public void displayBookByAuthor(String author){
+    public Book getBookByAuthor(String author) {
         Book book = bookRepository.findByAuthor(author);
-        if (book != null) {
-            System.out.println(book);
-        } else {
-            System.out.println("Le livre avec l'auteur : " + author + " n'existe pas.");
+        if (book == null) {
+            throw new IllegalArgumentException("Le livre avec l'auteur : " + author + " n'existe pas.");
         }
+        return book;
     }
 }

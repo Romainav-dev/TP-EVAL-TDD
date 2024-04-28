@@ -1,8 +1,8 @@
 package org.example.book;
 
-import org.example.controllers.BookController;
-import org.example.models.Book;
-import org.example.repositories.BookRepository;
+import org.example.books.models.Book;
+import org.example.books.repositories.BookRepository;
+import org.example.books.services.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,10 +12,10 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BookControllerTest {
+public class BookServiceTest {
 
     @InjectMocks
-    private BookController bookController;
+    private BookService bookService;
 
     @Mock
     private BookRepository bookRepository;
@@ -23,7 +23,7 @@ public class BookControllerTest {
     @BeforeEach
     void setUp() {
         bookRepository = mock(BookRepository.class);
-        bookController = new BookController(bookRepository);
+        bookService = new BookService(bookRepository);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class BookControllerTest {
         String format = "Poche";
         boolean available = true;
 
-        bookController.addBook(isbn, title, author, editor, format, available);
+        bookService.addBook(isbn, title, author, editor, format, available);
 
         verify(bookRepository).save(any(Book.class));
     }
@@ -49,13 +49,14 @@ public class BookControllerTest {
         String format = "Invalid Format";
         boolean available = true;
 
-        assertThrows(IllegalArgumentException.class, () -> bookController.addBook(isbn, title, author, editor, format, available));
+        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(isbn, title, author, editor, format, available));
 
         verify(bookRepository, never()).save(any(Book.class));
     }
 
     @Test
     public void testUpdateExistingBook() {
+        // Préparer les données de test
         String isbn = "1234567890";
         String title = "Ancien titre";
         String author = "Auteur";
@@ -64,21 +65,26 @@ public class BookControllerTest {
         boolean available = true;
         Book existingBook = new Book(isbn, title, author, editor, format, available);
 
-        when(bookRepository.findByIsbn(isbn)).thenReturn(existingBook);
-
         String newTitle = "Nouveau titre";
         String newAuthor = "Nouvel auteur";
         String newEditor = "Nouvel éditeur";
         String newFormat = "Broché";
         boolean newAvailable = false;
 
-        bookController.updateBook(isbn, newTitle, newAuthor, newEditor, newFormat, newAvailable);
+        // Configurer le comportement du mock pour renvoyer le livre existant
+        when(bookRepository.findByIsbn(isbn)).thenReturn(existingBook);
 
+        // Appeler la méthode pour mettre à jour le livre
+        bookService.updateBook(isbn, newTitle, newAuthor, newEditor, newFormat, newAvailable);
+
+        // Vérifier que la méthode save de bookRepository a été appelée avec le livre mis à jour
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
         verify(bookRepository).save(captor.capture());
 
-        Book capturedBook = captor.getAllValues().get(captor.getAllValues().size() - 1);
+        // Récupérer le livre capturé lors de l'appel à save
+        Book capturedBook = captor.getValue();
 
+        // Vérifier que les informations du livre capturé correspondent aux nouvelles informations
         assertEquals(newTitle, capturedBook.getTitle());
         assertEquals(newAuthor, capturedBook.getAuthor());
         assertEquals(newEditor, capturedBook.getEditor());
@@ -87,7 +93,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void testUpdateNonExistingBook() {
+    public void testUpdateNoExistingBook() {
         String isbn = "1234567890";
         String title = "Ancien titre";
         String author = "Auteur";
@@ -103,7 +109,7 @@ public class BookControllerTest {
         String newFormat = "Broché";
         boolean newAvailable = false;
 
-        bookController.updateBook(isbn, newTitle, newAuthor, newEditor, newFormat, newAvailable);
+        bookService.updateBook(isbn, newTitle, newAuthor, newEditor, newFormat, newAvailable);
 
         verify(bookRepository, never()).save(any(Book.class));
     }
@@ -120,18 +126,18 @@ public class BookControllerTest {
 
         when(bookRepository.findByIsbn(isbn)).thenReturn(existingBook);
 
-        bookController.deleteBook(isbn);
+        bookService.deleteBook(isbn);
 
         verify(bookRepository).delete(existingBook);
     }
 
     @Test
-    public void testDeleteNonExistingBook() {
+    public void testDeleteNoExistingBook() {
         String isbn = "1234567890";
 
         when(bookRepository.findByIsbn(isbn)).thenReturn(null);
 
-        bookController.deleteBook(isbn);
+        bookService.deleteBook(isbn);
 
         verify(bookRepository, never()).delete(any(Book.class));
     }
@@ -148,20 +154,18 @@ public class BookControllerTest {
 
         when(bookRepository.findByIsbn(isbn)).thenReturn(existingBook);
 
-        bookController.displayBookByIsbn(isbn);
+        bookService.getBookByIsbn(isbn);
 
         verify(bookRepository).findByIsbn(isbn);
     }
 
     @Test
-    public void testFindNonExistingBookByISBN(){
+    public void testFindNoExistingBookByISBN(){
         String isbn = "1234567890";
 
         when(bookRepository.findByIsbn(isbn)).thenReturn(null);
 
-        bookController.displayBookByIsbn(isbn);
-
-        verify(bookRepository).findByIsbn(isbn);
+        assertThrows(IllegalArgumentException.class, () -> bookService.getBookByIsbn(isbn));
     }
 
     @Test
@@ -176,20 +180,18 @@ public class BookControllerTest {
 
         when(bookRepository.findByTitle(title)).thenReturn(existingBook);
 
-        bookController.displayBookByTitle(title);
+        bookService.getBookByTitle(title);
 
         verify(bookRepository).findByTitle(title);
     }
 
     @Test
-    public void testFindNonExistingBookByTitle(){
+    public void testFindNoExistingBookByTitle(){
         String title = "Ancien titre";
 
         when(bookRepository.findByTitle(title)).thenReturn(null);
 
-        bookController.displayBookByTitle(title);
-
-        verify(bookRepository).findByTitle(title);
+        assertThrows(IllegalArgumentException.class, () -> bookService.getBookByTitle(title));
     }
 
     @Test
@@ -204,20 +206,18 @@ public class BookControllerTest {
 
         when(bookRepository.findByAuthor(author)).thenReturn(existingBook);
 
-        bookController.displayBookByAuthor(author);
+        bookService.getBookByAuthor(author);
 
         verify(bookRepository).findByAuthor(author);
     }
 
     @Test
-    public void testFindNonExistingBookByAuthor(){
+    public void testFindNoExistingBookByAuthor(){
         String author = "Auteur";
 
         when(bookRepository.findByAuthor(author)).thenReturn(null);
 
-        bookController.displayBookByAuthor(author);
-
-        verify(bookRepository).findByAuthor(author);
+        assertThrows(IllegalArgumentException.class, () -> bookService.getBookByAuthor(author));
     }
 }
 

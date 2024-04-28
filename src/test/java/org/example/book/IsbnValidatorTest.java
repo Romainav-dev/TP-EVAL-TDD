@@ -2,7 +2,7 @@ package org.example.book;
 
 import org.example.exceptions.InvalidIsbnCharactersException;
 import org.example.exceptions.InvalidIsbnLengthException;
-import org.example.books.IsbnValidator;
+import org.example.books.validator.IsbnValidator;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

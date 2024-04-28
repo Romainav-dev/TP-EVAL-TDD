@@ -1,5 +1,5 @@
-package org.example.repositories;
-import org.example.models.Book;
+package org.example.books.repositories;
+import org.example.books.models.Book;
 
 public interface BookRepository {
     Book findByIsbn(String isbn);

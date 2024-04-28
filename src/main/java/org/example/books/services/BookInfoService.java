@@ -1,7 +1,9 @@
-package org.example.books;
+package org.example.books.services;
 
+import org.example.books.BookDataService;
+import org.example.books.BookDatabaseUpdater;
 import org.example.exceptions.BookNotFoundException;
-import org.example.models.Book;
+import org.example.books.models.Book;
 
 public class BookInfoService {
 
@@ -25,9 +27,4 @@ public class BookInfoService {
         databaseUpdater.updateBook(webServiceBook);
         return webServiceBook;
     }
-
-    /*public void createBookInDatabase(String isbn, String title, String author){
-        Book book = new Book(isbn, title, author);
-        databaseUpdater.updateBook(book);
-    }*/
 }

@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.adherents.reservations.models;
 
 import java.time.LocalDate;
 

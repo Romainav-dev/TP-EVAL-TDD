@@ -1,6 +1,7 @@
-package org.example.books;
+package org.example.books.services;
 
-import org.example.models.Book;
+import org.example.books.BookDataService;
+import org.example.books.models.Book;
 
 public class WebBookDataService implements BookDataService {
 

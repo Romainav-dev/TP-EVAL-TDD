@@ -1,7 +1,7 @@
-package org.example.models;
+package org.example.books.models;
 
 import org.example.interfaces.Validatable;
-import org.example.books.BookValidator;
+import org.example.books.validator.BookValidator;
 
 public class Book implements Validatable {
 
@@ -21,46 +21,52 @@ public class Book implements Validatable {
         this.available = available;
     }
 
-    public String getIsbn(){
+    public String getIsbn() {
         return isbn;
     }
-    public String setIsbn(String isbn){
+
+    public String setIsbn(String isbn) {
         return this.isbn = isbn;
     }
 
     public String getTitle() {
         return title;
     }
-    public String setTitle(String title){
-        return this.title = this.title;
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAuthor() {
         return author;
     }
-    public String setAuthor(String author){
-        return this.author = this.author;
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getEditor() {
         return editor;
     }
-    public String setEditor(String editor){
-        return this.editor = this.editor;
+
+    public void setEditor(String editor) {
+        this.editor = editor;
     }
 
     public String getFormat() {
         return format;
     }
-    public String setFormat(String format){
-        return this.format = this.format;
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public boolean getAvailable() {
         return available;
     }
-    public boolean setAvailable(boolean available){
-        return this.available = this.available;
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.example.books;
+package org.example.books.validator;
 
 import org.example.exceptions.InvalidIsbnCharactersException;
 import org.example.exceptions.InvalidIsbnLengthException;

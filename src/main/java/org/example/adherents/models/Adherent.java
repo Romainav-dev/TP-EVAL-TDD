@@ -1,6 +1,8 @@
-package org.example.models;
+package org.example.adherents.models;
 
+import org.example.adherents.validator.AdherentValidator;
 import org.example.interfaces.Validatable;
+import org.example.adherents.reservations.models.Reservation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +12,16 @@ public class Adherent implements Validatable {
     private String code_adherent;
     private String nom;
     private String prenom;
+    private String email;
     private String date_naissance;
     private String civilite;
     private List<Reservation> reservations;
 
-    public Adherent(String code_adherent, String nom, String prenom, String date_naissance, String civilite) {
+    public Adherent(String code_adherent, String nom, String prenom, String email, String date_naissance, String civilite) {
         this.code_adherent = code_adherent;
         this.nom = nom;
         this.prenom = prenom;
+        this.email = email;
         this.date_naissance = date_naissance;
         this.civilite = civilite;
         this.reservations = new ArrayList<>();
@@ -33,6 +37,10 @@ public class Adherent implements Validatable {
 
     public String getPrenom() {
         return prenom;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getDate_naissance() {
@@ -53,20 +61,6 @@ public class Adherent implements Validatable {
 
     @Override
     public void validate() {
-        if (code_adherent == null || code_adherent.isEmpty()) {
-            throw new IllegalArgumentException("Code adhérent must be positive");
-        }
-        if (nom == null || nom.isEmpty()) {
-            throw new IllegalArgumentException("Nom must not be empty");
-        }
-        if (prenom == null || prenom.isEmpty()) {
-            throw new IllegalArgumentException("Prenom must not be empty");
-        }
-        if (date_naissance == null || date_naissance.isEmpty()) {
-            throw new IllegalArgumentException("Date naissance must not be empty");
-        }
-        if (civilite == null || civilite.isEmpty()) {
-            throw new IllegalArgumentException("Civilité must not be empty");
-        }
+        AdherentValidator.validateAdherent(this);
     }
 }

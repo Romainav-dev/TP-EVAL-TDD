@@ -1,6 +1,6 @@
 package org.example.book;
 
-import org.example.models.Book;
+import org.example.books.models.Book;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,6 +64,42 @@ public class BookTest {
     @Test
     public void testAddValidBook() {
         Book book = new Book("1234567890", "Title", "Author", "Editor", "Poche", true);
+        assertDoesNotThrow(book::validate);
+    }
+
+    @Test
+    public void testTitreLongueurMaximaleAutoriseeDepasse() {
+        Book book = new Book("1234567890", "Les jolies petite fleurs dans la forêt", "Thibault", "Gallimard", "Poche", true);
+        assertThrows(IllegalArgumentException.class, book::validate);
+    }
+
+    @Test
+    public void testTitreLongueurValide() {
+        Book book = new Book("1234567890", "Les jolies petites fleurs", "Thibault", "Gallimard", "Poche", true);
+        assertDoesNotThrow(book::validate);
+    }
+
+    @Test
+    public void testNomAuteurLongueurMaximaleAutoriseeDepasse() {
+        Book book = new Book("1234567890", "Title", "Jean Pierre Louis", "Gallimard", "Poche", true);
+        assertThrows(IllegalArgumentException.class, book::validate);
+    }
+
+    @Test
+    public void testNomAuteurLongueurValide() {
+        Book book = new Book("1234567890", "Title", "Thibault", "Gallimard", "Poche", true);
+        assertDoesNotThrow(book::validate);
+    }
+
+    @Test
+    public void testNomEditeurLongueurMaximaleAutoriseeDepasse() {
+        Book book = new Book("1234567890", "Title", "Thibault", "Les flamants roses Romans", "Poche", true);
+        assertThrows(IllegalArgumentException.class, book::validate);
+    }
+
+    @Test
+    public void testNomEditeurLongueurValide() {
+        Book book = new Book("1234567890", "Title", "Thibault", "Hachette Romans", "Poche", true);
         assertDoesNotThrow(book::validate);
     }
 }

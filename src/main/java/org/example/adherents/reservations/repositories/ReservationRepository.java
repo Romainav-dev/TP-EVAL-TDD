@@ -1,6 +1,6 @@
-package org.example.repositories;
+package org.example.adherents.reservations.repositories;
 
-import org.example.models.Reservation;
+import org.example.adherents.reservations.models.Reservation;
 
 import java.util.List;
 

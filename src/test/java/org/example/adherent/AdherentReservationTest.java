@@ -1,9 +1,10 @@
 package org.example.adherent;
 
-import org.example.models.Adherent;
-import org.example.models.Reservation;
-import org.example.repositories.ReservationRepository;
-import org.example.services.ReservationService;
+import org.example.adherents.models.Adherent;
+import org.example.adherents.reservations.models.Reservation;
+import org.example.adherents.reservations.repositories.ReservationRepository;
+import org.example.adherents.mails.MailService;
+import org.example.adherents.reservations.services.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,14 +25,17 @@ public class AdherentReservationTest {
     @Mock
     private ReservationRepository reservationRepository = mock(ReservationRepository.class);
 
+    @Mock
+    private MailService mailService = mock(MailService.class);
+
     @BeforeEach
-    public void initBeforeEach(){
-        reservationService = new ReservationService(reservationRepository);
+    public void initBeforeEach() {
+        reservationService = new ReservationService(reservationRepository, mailService);
     }
 
     @Test
     public void testReservationAddedToAdherentList() {
-        Adherent adherent = new Adherent("123", "John", "Doe", "01/01/1990", "Monsieur");
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/01/1990", "Monsieur");
 
         String reservationId = "R123";
         LocalDate dateDepot = LocalDate.parse("2024-04-01");
@@ -40,7 +44,7 @@ public class AdherentReservationTest {
         String referenceAdherent = adherent.getCode_adherent();
         Reservation reservation = new Reservation(reservationId, dateDepot, dateLimite, etat, referenceAdherent);
 
-        ReservationService reservationService = new ReservationService(reservationRepository);
+        ReservationService reservationService = new ReservationService(reservationRepository, mailService);
         boolean reservationSuccess = reservationService.makeReservation(adherent, reservation);
 
         assertTrue(reservationSuccess);
@@ -49,7 +53,7 @@ public class AdherentReservationTest {
 
     @Test
     public void testReservationDetailsCorrect() {
-        Adherent adherent = new Adherent("123", "John", "Doe", "01/01/1990", "Monsieur");
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/01/1990", "Monsieur");
 
         String reservationId = "R123";
         LocalDate dateDepot = LocalDate.parse("2024-04-01");
@@ -58,7 +62,7 @@ public class AdherentReservationTest {
         String referenceAdherent = adherent.getCode_adherent();
         Reservation reservation = new Reservation(reservationId, dateDepot, dateLimite, etat, referenceAdherent);
 
-        ReservationService reservationService = new ReservationService(reservationRepository);
+        ReservationService reservationService = new ReservationService(reservationRepository, mailService);
         boolean reservationSuccess = reservationService.makeReservation(adherent, reservation);
 
         assertTrue(reservationSuccess);
@@ -72,7 +76,7 @@ public class AdherentReservationTest {
 
     @Test
     public void testReservationDeadline() {
-        Adherent adherent = new Adherent("123", "John", "Doe", "01/04/1990", "Monsieur");
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/04/1990", "Monsieur");
 
         String reservationId = "R123";
         LocalDate dateDepot = LocalDate.parse("2024-04-01");
@@ -90,7 +94,7 @@ public class AdherentReservationTest {
 
     @Test
     public void testInvalidReservationDeadline() {
-        Adherent adherent = new Adherent("123", "John", "Doe", "01/04/1990", "Monsieur");
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/04/1990", "Monsieur");
 
         String reservationId = "R123";
         LocalDate dateDepot = LocalDate.parse("2024-09-01");
@@ -106,7 +110,7 @@ public class AdherentReservationTest {
 
     @Test
     public void testEndReservation() {
-        Adherent adherent = new Adherent("123", "John", "Doe", "01/04/1990", "Monsieur");
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/04/1990", "Monsieur");
 
         String reservationId = "R123";
         LocalDate dateDepot = LocalDate.parse("2024-09-01");
@@ -121,8 +125,8 @@ public class AdherentReservationTest {
     }
 
     @Test
-    public void testMaxThreeOpenReservationsPerAdherent(){
-        Adherent adherent = new Adherent("123", "John", "Doe", "01/04/1990", "Monsieur");
+    public void testMaxThreeOpenReservationsPerAdherent() {
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/04/1990", "Monsieur");
 
         String reservationId1 = "R121";
         LocalDate dateDepot1 = LocalDate.parse("2024-09-01");
@@ -152,7 +156,7 @@ public class AdherentReservationTest {
         String referenceAdherent4 = adherent.getCode_adherent();
         Reservation reservation4 = new Reservation(reservationId4, dateDepot4, dateLimite4, etat4, referenceAdherent4);
 
-        ReservationService reservationService = new ReservationService(reservationRepository);
+        ReservationService reservationService = new ReservationService(reservationRepository, mailService);
         reservationService.makeReservation(adherent, reservation1);
         reservationService.makeReservation(adherent, reservation2);
         reservationService.makeReservation(adherent, reservation3);
@@ -164,7 +168,7 @@ public class AdherentReservationTest {
 
     @Test
     public void testGetOpenReservations() {
-        Adherent adherent = new Adherent("123", "John", "Doe", "01/04/1990", "Monsieur");
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/04/1990", "Monsieur");
 
         Reservation reservation1 = new Reservation("R121", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-12-01"), "En cours", "123");
         Reservation reservation2 = new Reservation("R122", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-12-01"), "En cours", "123");
@@ -173,7 +177,7 @@ public class AdherentReservationTest {
 
         when(reservationRepository.findByAdherentId("123")).thenReturn(Arrays.asList(reservation1, reservation2, reservation3));
 
-        ReservationService reservationService = new ReservationService(reservationRepository);
+        ReservationService reservationService = new ReservationService(reservationRepository, mailService);
 
         List<Reservation> openReservations = reservationService.getOpenReservations(adherent);
 
@@ -198,4 +202,25 @@ public class AdherentReservationTest {
 
         assertEquals(6, reservationHistory.size());
     }
+
+    @Test
+    public void testSendReminderEmail() {
+        Adherent adherent = new Adherent("123", "John", "Doe", "john.doe@example.com", "01/04/1990", "Monsieur");
+
+        Reservation reservation1 = new Reservation("R121", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-03-01"), "Terminée", "123");
+        Reservation reservation2 = new Reservation("R122", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-03-01"), "Terminée", "123");
+        Reservation reservation3 = new Reservation("R123", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-03-01"), "Terminée", "123");
+        Reservation reservation4 = new Reservation("R124", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-03-01"), "Terminée", "123");
+        Reservation reservation5 = new Reservation("R125", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-03-01"), "Terminée", "123");
+        Reservation reservation6 = new Reservation("R126", LocalDate.parse("2024-09-01"), LocalDate.parse("2024-03-01"), "Terminée", "123");
+
+        when(reservationRepository.findByAdherentId("123")).thenReturn(Arrays.asList(reservation1, reservation2, reservation3, reservation4, reservation5, reservation6));
+
+        ReservationService reservationService = new ReservationService(reservationRepository, mailService);
+
+        reservationService.sendReminderEmail(adherent);
+
+        verify(mailService, times(6)).sendReminderEmail(any(Adherent.class), any(Reservation.class));
+    }
+
 }
